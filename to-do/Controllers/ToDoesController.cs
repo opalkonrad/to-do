@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +26,9 @@ namespace to_do.Controllers
         // GET: ToDoes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ToDos.ToListAsync());
+            string currUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            IdentityUser currUser = await _context.Users.FindAsync(currUserId);
+            return View(_context.ToDos.ToList().Where(x => x.User == currUser));
         }
 
         // GET: ToDoes/Details/5
@@ -60,6 +64,9 @@ namespace to_do.Controllers
         {
             if (ModelState.IsValid)
             {
+                string currUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                IdentityUser currUser = await _context.Users.FindAsync(currUserId);
+                toDo.User = currUser;
                 _context.Add(toDo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

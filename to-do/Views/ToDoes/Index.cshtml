@@ -10,8 +10,11 @@
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
-    <thead>
+    <thead class="thead-dark">
         <tr>
+            <th>
+                #
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsDone)
             </th>
@@ -21,9 +24,17 @@
             <th></th>
         </tr>
     </thead>
+
+    @{ int cntr = 1; }
+
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
+            <th>
+                @cntr
+                @{ cntr++; }
+            </th>
             <td>
                 @Html.DisplayFor(modelItem => item.IsDone)
             </td>
@@ -36,6 +47,6 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>
