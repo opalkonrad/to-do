@@ -24,11 +24,21 @@ namespace to_do.Controllers
         }
 
         // GET: ToDoes
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        private IEnumerable<ToDo> GetToDo()
         {
             string currUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            IdentityUser currUser = await _context.Users.FindAsync(currUserId);
-            return View(_context.ToDos.ToList().Where(x => x.User == currUser));
+            IdentityUser currUser = _context.Users.Find(currUserId);
+            return _context.ToDos.ToList().Where(x => x.User == currUser);
+        }
+
+        public IActionResult RefreshToDoTable()
+        {
+            return PartialView("_ToDoCurrTable", GetToDo());
         }
 
         // GET: ToDoes/Details/5
@@ -70,6 +80,23 @@ namespace to_do.Controllers
                 _context.Add(toDo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            return View(toDo);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AjaxCreate([Bind("Id,Description")] ToDo toDo)
+        {
+            if (ModelState.IsValid)
+            {
+                string currUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                IdentityUser currUser = await _context.Users.FindAsync(currUserId);
+                toDo.User = currUser;
+                toDo.IsDone = false;
+                _context.Add(toDo);
+                await _context.SaveChangesAsync();
+                return PartialView("_ToDoCurrTable", GetToDo());
             }
             return View(toDo);
         }

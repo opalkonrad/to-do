@@ -1,52 +1,31 @@
-﻿@model IEnumerable<to_do.Models.ToDo>
+﻿@model to_do.Models.ToDo
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div id="currTable"></div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead class="thead-dark">
-        <tr>
-            <th>
-                #
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsDone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="ToDoes" asp-action="AjaxCreate"
+              data-ajax="true" data-ajax-method="POST"
+              data-ajax-mode="replace" data-ajax-update="#currTable">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Add To-Do:</label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" onclick="submitForm()" />
+            </div>
+        </form>
+    </div>
+</div>
 
-    @{ int cntr = 1; }
 
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
-            <th>
-                @cntr
-                @{ cntr++; }
-            </th>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+@section Scripts {
+    <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/js/RefreshTable.js"></script>
+}
