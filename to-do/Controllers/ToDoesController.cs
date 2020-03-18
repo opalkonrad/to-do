@@ -33,10 +33,22 @@ namespace to_do.Controllers
         {
             string currUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             IdentityUser currUser = _context.Users.Find(currUserId);
-            return _context.ToDos.ToList().Where(x => x.User == currUser);
+
+            /*IEnumerable<ToDo> toDoList = await _context.ToDos.Where(x => x.User == currUser).ToListAsync();*/
+            IEnumerable<ToDo> toDoList = _context.ToDos.ToList().Where(x => x.User == currUser);
+            int completeCntr = 0;
+            foreach (ToDo toDo in toDoList)
+            {
+                if (toDo.IsDone)
+                    completeCntr++;
+            }
+
+            ViewBag.Percent = Math.Round(100f * ((float)completeCntr / (float)toDoList.Count()));
+
+            return toDoList;
         }
 
-        public IActionResult RefreshToDoTable()
+        public IActionResult RefreshToDoTableAsync()
         {
             return PartialView("_ToDoCurrTable", GetToDo());
         }

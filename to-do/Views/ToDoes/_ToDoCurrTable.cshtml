@@ -1,6 +1,15 @@
 ﻿@model IEnumerable<to_do.Models.ToDo>
 
-<table class="table">
+<div id="status">
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated"
+             role="progressbar" style="width:@(ViewBag.Percent)%">
+            @(ViewBag.Percent)%
+        </div>
+    </div>
+</div>
+
+<table class="table mt-3">
     <thead class="thead-dark">
         <tr>
             <th>
@@ -16,29 +25,47 @@
         </tr>
     </thead>
 
-    @{ int cntr = 1; }
+    @{
+        int cntr = 1;
+        string appearance;
+    }
 
     <tbody>
         @foreach (var item in Model)
         {
+            @if (item.IsDone)
+            {
+                appearance = "lessVisible";
+            }
+            else
+            {
+                appearance = "";
+            }
             <tr>
                 <th>
-                    @cntr
+                    <div class="@appearance">
+                        @cntr
+                    </div>
                     @{ cntr++; }
                 </th>
                 <td>
-                    @Html.CheckBoxFor(modelItem => item.IsDone, new { @class="check", id=item.Id })
+                    <div class="@appearance">
+                        @Html.CheckBoxFor(modelItem => item.IsDone, new { @class = "check", id = item.Id })
+                    </div>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    <div class="@appearance">
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </div>
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash"></i></a>
                 </td>
             </tr>
         }
+
+
     </tbody>
 </table>
 
