@@ -152,6 +152,26 @@ namespace to_do.Controllers
             return View(toDo);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AjaxEdit(int? id, bool val)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var toDo = await _context.ToDos.FindAsync(id);
+            if (toDo == null)
+            {
+                return NotFound();
+            }
+
+            toDo.IsDone = val;
+            _context.Update(toDo);
+            await _context.SaveChangesAsync();
+            return PartialView("_ToDoCurrTable", GetToDo());
+        }
+
         // GET: ToDoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

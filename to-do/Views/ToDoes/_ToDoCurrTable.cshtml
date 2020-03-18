@@ -27,7 +27,7 @@
                     @{ cntr++; }
                 </th>
                 <td>
-                    @Html.CheckBoxFor(modelItem => item.IsDone)
+                    @Html.CheckBoxFor(modelItem => item.IsDone, new { @class="check", id=item.Id })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
@@ -41,3 +41,5 @@
         }
     </tbody>
 </table>
+
+<script src="~/js/to-do-checkbox.js"></script>
