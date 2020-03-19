@@ -16,4 +16,20 @@
             }
         });
     });
+
+    $(".fa-trash").click(function () {
+        var self = $(this);
+        var id = self.attr('id');
+        
+        $.ajax({
+            url: 'ToDoes/AjaxDelete',
+            data: {
+                id: id
+            },
+            type: 'POST',
+            success: function (result) {
+                $('#currTable').html(result);
+            }
+        });
+    });
 });

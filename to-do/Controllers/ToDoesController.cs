@@ -48,7 +48,7 @@ namespace to_do.Controllers
             return toDoList;
         }
 
-        public IActionResult RefreshToDoTableAsync()
+        public IActionResult RefreshToDoTable()
         {
             return PartialView("_ToDoCurrTable", GetToDo());
         }
@@ -211,6 +211,25 @@ namespace to_do.Controllers
             _context.ToDos.Remove(toDo);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AjaxDelete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var toDo = await _context.ToDos.FindAsync(id);
+            if (toDo == null)
+            {
+                return NotFound();
+            }
+
+            _context.ToDos.Remove(toDo);
+            await _context.SaveChangesAsync();
+            return PartialView("_ToDoCurrTable", GetToDo());
         }
 
         private bool ToDoExists(int id)

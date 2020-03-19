@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<to_do.Models.ToDo>
 
 <div id="status">
-    <div class="progress">
+    <div class="progress my-3">
         <div class="progress-bar progress-bar-striped progress-bar-animated"
              role="progressbar" style="width:@(ViewBag.Percent)%">
             @(ViewBag.Percent)%
@@ -9,7 +9,17 @@
     </div>
 </div>
 
-<table class="table mt-3">
+@if (ViewBag.Percent == 100)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Well done!</strong> You've completed all the tasks.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<table class="table my-3">
     <thead class="thead-dark">
         <tr>
             <th>
@@ -42,31 +52,22 @@
                 appearance = "";
             }
             <tr>
-                <th>
-                    <div class="@appearance">
-                        @cntr
-                    </div>
+                <th class="@appearance">
+                    @cntr
                     @{ cntr++; }
                 </th>
-                <td>
-                    <div class="@appearance">
-                        @Html.CheckBoxFor(modelItem => item.IsDone, new { @class = "check", id = item.Id })
-                    </div>
+                <td class="@appearance">
+                    @Html.CheckBoxFor(modelItem => item.IsDone, new { @class = "check", id = item.Id })
+                </td>
+                <td class="@appearance">
+                    @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    <div class="@appearance">
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </div>
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash"></i></a>
+                    <i id="@item.Id" class="fas fa-trash"></i>
                 </td>
             </tr>
         }
-
-
     </tbody>
 </table>
 
-<script src="~/js/to-do-checkbox.js"></script>
+<script src="~/js/to-do-list.js"></script>
