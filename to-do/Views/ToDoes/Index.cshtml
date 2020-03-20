@@ -10,7 +10,8 @@
     <div class="col-md-4">
         <form asp-controller="ToDoes" asp-action="AjaxCreate"
               data-ajax="true" data-ajax-method="POST"
-              data-ajax-mode="replace" data-ajax-update="#currTable">
+              data-ajax-mode="replace" data-ajax-update="#currTable"
+              data-ajax-complete="clearInput">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label">Add To-Do:</label>

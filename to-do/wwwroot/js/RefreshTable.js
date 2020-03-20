@@ -5,4 +5,8 @@
             $('#currTable').html(result);
         }
     });
+
+    clearInput = function () {
+        $('.form-control').val('');
+    }
 });
