@@ -43,7 +43,8 @@ namespace to_do.Controllers
                     completeCntr++;
             }
 
-            ViewBag.Percent = Math.Round(100f * ((float)completeCntr / (float)toDoList.Count()));
+            ViewBag.Percent = (toDoList.Count() > 0) ?
+                Math.Round(100f * ((float)completeCntr / (float)toDoList.Count())) : 0.0;
 
             return toDoList;
         }

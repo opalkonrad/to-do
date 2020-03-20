@@ -5,3 +5,8 @@
     text-decoration: line-through;
     color: #D3D3D3;
 }
+
+.fas:hover {
+    color: #CB3838;
+    cursor: pointer;
+}
