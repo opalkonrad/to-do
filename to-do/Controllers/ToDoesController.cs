@@ -54,49 +54,6 @@ namespace to_do.Controllers
             return PartialView("_ToDoCurrTable", GetToDo());
         }
 
-        // GET: ToDoes/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var toDo = await _context.ToDos
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (toDo == null)
-            {
-                return NotFound();
-            }
-
-            return View(toDo);
-        }
-
-        // GET: ToDoes/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ToDoes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IsDone,Description")] ToDo toDo)
-        {
-            if (ModelState.IsValid)
-            {
-                string currUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                IdentityUser currUser = await _context.Users.FindAsync(currUserId);
-                toDo.User = currUser;
-                _context.Add(toDo);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(toDo);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AjaxCreate([Bind("Id,Description")] ToDo toDo)
@@ -110,57 +67,6 @@ namespace to_do.Controllers
                 _context.Add(toDo);
                 await _context.SaveChangesAsync();
                 return PartialView("_ToDoCurrTable", GetToDo());
-            }
-            return View(toDo);
-        }
-
-        // GET: ToDoes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var toDo = await _context.ToDos.FindAsync(id);
-            if (toDo == null)
-            {
-                return NotFound();
-            }
-            return View(toDo);
-        }
-
-        // POST: ToDoes/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IsDone,Description")] ToDo toDo)
-        {
-            if (id != toDo.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(toDo);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ToDoExists(toDo.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
             }
             return View(toDo);
         }
@@ -185,35 +91,6 @@ namespace to_do.Controllers
             return PartialView("_ToDoCurrTable", GetToDo());
         }
 
-        // GET: ToDoes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var toDo = await _context.ToDos
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (toDo == null)
-            {
-                return NotFound();
-            }
-
-            return View(toDo);
-        }
-
-        // POST: ToDoes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var toDo = await _context.ToDos.FindAsync(id);
-            _context.ToDos.Remove(toDo);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
         [HttpPost]
         public async Task<IActionResult> AjaxDelete(int? id)
         {
@@ -231,11 +108,6 @@ namespace to_do.Controllers
             _context.ToDos.Remove(toDo);
             await _context.SaveChangesAsync();
             return PartialView("_ToDoCurrTable", GetToDo());
-        }
-
-        private bool ToDoExists(int id)
-        {
-            return _context.ToDos.Any(e => e.Id == id);
         }
     }
 }
