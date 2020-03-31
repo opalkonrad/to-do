@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-controller="ToDoes" asp-action="AjaxCreate"
+        <form id="form" asp-controller="ToDoes" asp-action="AjaxCreate"
               data-ajax="true" data-ajax-method="POST"
               data-ajax-mode="replace" data-ajax-update="#currTable"
               data-ajax-complete="clearInput">
@@ -29,4 +29,5 @@
 @section Scripts {
     <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/js/refresh-table.js"></script>
+    <partial name="_ValidationScriptsPartial" />
 }

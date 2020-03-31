@@ -15,6 +15,6 @@
     });
 
     clearInput = function () {
-        $('.form-control').val('');
+        form.reset();
     }
 });
