@@ -7,7 +7,7 @@
 <div id="currTable"></div>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4 mx-auto">
         <form id="form" asp-controller="ToDoes" asp-action="AjaxCreate"
               data-ajax="true" data-ajax-method="POST"
               data-ajax-mode="replace" data-ajax-update="#currTable"
@@ -15,7 +15,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label">Add To-Do:</label>
-                <input asp-for="Description" class="form-control" />
+                <input asp-for="Description" class="form-control" autocomplete="off" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
